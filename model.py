@@ -44,7 +44,7 @@ train_val_gen = ImageDataGenerator(
 
 # === Training set from 80% of the data ===
 train_data = train_val_gen.flow_from_directory(
-    DATASET_PATH,
+      os.path.join(DATASET_PATH, "DataSet"),
     target_size=IMG_SIZE,
     batch_size=BATCH_SIZE,
     class_mode='categorical',
@@ -55,7 +55,7 @@ train_data = train_val_gen.flow_from_directory(
 
 # === Validation set from 20% of the data ===
 val_data = train_val_gen.flow_from_directory(
-    DATASET_PATH,
+     os.path.join(DATASET_PATH, "DataSet"),
     target_size=IMG_SIZE,
     batch_size=BATCH_SIZE,
     class_mode='categorical',
@@ -65,6 +65,8 @@ val_data = train_val_gen.flow_from_directory(
 )
 
 NUM_CLASSES = len(train_data.class_indices)
+
+print(train_data.class_indices)
 
 # ==== BUILD MODEL ====
 base_model = MobileNetV2(include_top=False, weights='imagenet', input_shape=(IMG_SIZE[0], IMG_SIZE[1], 3))
@@ -163,23 +165,23 @@ plt.title("Loss")
 plt.legend()
 plt.show()
 
-IMAGE_PATH = '/kaggle/input/sssssssssssss/squirrel-monkeys-9143848_1280.jpg'
+model.save("best_model.h5")   # saves in HDF5 format
 
-# ==== PREDICT ON NEW IMAGE ====
-def predict_image(path, model, class_labels):
-    img = load_img(path, target_size=IMG_SIZE)
-    img_array = img_to_array(img)
-    img_array = np.expand_dims(img_array, axis=0) / 255.0
+from google.colab import files
+files.download("best_model.h5")
 
-    prediction = model.predict(img_array)
-    predicted_index = np.argmax(prediction)
-    predicted_label = class_labels[predicted_index]
-    confidence = prediction[0][predicted_index]
+import tensorflow as tf
 
-    print(f"Predicted: {predicted_label} ({confidence:.2%})")
+# Load the trained .h5 model
+model = tf.keras.models.load_model("best_model.h5")
 
-# Get class names
-class_labels = list(train_data.class_indices.keys())
+# Convert to TFLite
+converter = tf.lite.TFLiteConverter.from_keras_model(model)
+tflite_model = converter.convert()
 
-# Predict
-predict_image(IMAGE_PATH, model, class_labels)
+# Save locally in Colab
+with open("best_model.tflite", "wb") as f:
+    f.write(tflite_model)
+
+from google.colab import files
+files.download("best_model.tflite")
