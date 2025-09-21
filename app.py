@@ -73,7 +73,7 @@ def run_camera(model, class_labels):
 # Example usage
 if __name__ == "__main__":
     # Option 1: predict a static image
-     predict_image("goat.jpeg", class_labels)
+    # predict_image("goat.jpeg", class_labels)
 
     # Option 2: run live webcam
-   # run_camera(model, class_labels)
+    run_camera(model, class_labels)
