@@ -10,8 +10,8 @@ model = tf.keras.models.load_model("best_model.h5")
 
 # Define your labels from training
 class_labels = ["Cows", "Goats", "Hippo", "Humans", "Hyenas", "Moneys"]
-DEVICE_URL = "http://192.168.1.50/alert"
-CONF_THRESHOLD = 0.8
+DEVICE_URL = "http://192.168.1.101/receive"
+CONF_THRESHOLD = 0.85
 # Predict single image
 def predict_image(path, class_labels):
     img = load_img(path, target_size=IMG_SIZE)
@@ -73,7 +73,7 @@ def run_camera(model, class_labels):
 # Example usage
 if __name__ == "__main__":
     # Option 1: predict a static image
-    # predict_image("goat.jpeg", class_labels)
+   # predict_image("MTU.jpeg", class_labels)
 
     # Option 2: run live webcam
     run_camera(model, class_labels)
