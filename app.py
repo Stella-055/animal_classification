@@ -7,10 +7,10 @@ from keras.preprocessing.image import load_img, img_to_array
 from collections import deque
 
 # === CONFIG ===
-#IMG_SIZE = (224, 224)
+
 IMG_SIZE = (128, 128)
-#MODEL_PATH = "mobilenet_animals.keras"  # saved model
-MODEL_PATH = "best_model.h5"  # saved model
+
+MODEL_PATH = "best_model (1).h5"  # saved model
  
 DEVICE_URL = "http://192.168.1.101/receive"  # ESP/Arduino endpoint
 CONF_THRESHOLD = 0.85
@@ -20,7 +20,7 @@ COOLDOWN = 5  # seconds between sending alerts
 model = tf.keras.models.load_model(MODEL_PATH)
 
 # === CLASS LABELS === (match your dataset order)
-class_labels = ["Cows", "Goats", "Hippo", "Humans", "Hyenas", "Moneys"]
+class_labels = ["Cows", "Goats", "Hippo", "Humans", "Hyenas", "Moneys" ,"elephant"]
 
 # === Prediction history for smoothing ===
 preds_history = deque(maxlen=5)
@@ -41,9 +41,9 @@ def predict_image(path, class_labels):
     if class_labels[idx] != "Humans" and conf >= CONF_THRESHOLD:
         try:
             requests.get(f"{DEVICE_URL}?animal={class_labels[idx]}&conf={conf:.2f}")
-            print(f"✅ Alert sent: {class_labels[idx]} ({conf:.2%})")
+            print(f" Alert sent: {class_labels[idx]} ({conf:.2%})")
         except:
-            print("⚠️ Could not reach WiFi device")
+            print("Could not reach WiFi device")
 
 # === Predict Frame (for webcam) ===
 def predict_frame(frame, model, class_labels):
@@ -77,10 +77,10 @@ def run_camera(model, class_labels):
             if time.time() - last_sent > COOLDOWN:
                 try:
                     requests.get(f"{DEVICE_URL}?animal={label}&conf={conf:.2f}")
-                    print(f"✅ Alert sent: {label} ({conf:.2%})")
+                    print(f"Alert sent: {label} ({conf:.2%})")
                     last_sent = time.time()
                 except:
-                    print("⚠️ Could not reach WiFi device")
+                    print("Could not reach WiFi device")
 
         # === Display ===
         cv2.putText(frame, f"{label} ({conf:.2%})",
