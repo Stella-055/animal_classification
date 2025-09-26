@@ -10,7 +10,7 @@ from collections import deque
 
 IMG_SIZE = (128, 128)
 
-MODEL_PATH = "best_model (1).h5"  # saved model
+MODEL_PATH = "best_model (2).h5"  # saved model
  
 DEVICE_URL = "http://192.168.1.101/receive"  # ESP/Arduino endpoint
 CONF_THRESHOLD = 0.85
