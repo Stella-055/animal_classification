@@ -12,7 +12,7 @@ IMG_SIZE = (128, 128)
 
 MODEL_PATH = "best_model (2).h5"  # saved model
  
-DEVICE_URL = "http://192.168.1.101/receive"  # ESP/Arduino endpoint
+DEVICE_URL = "http://192.168.1.103/receive"  # ESP/Arduino endpoint
 CONF_THRESHOLD = 0.85
 COOLDOWN = 5  # seconds between sending alerts
 
