@@ -35,6 +35,7 @@ Communication: HTTP (Wi-Fi GET requests from Flask to ESP32)
 ## 🚀 Setup & Installation
 1️⃣ Clone Repository
 git clone https://github.com/Stella-055/animal_classification.git
+
 cd animal_classification
 
 2️⃣ Install Python Dependencies
